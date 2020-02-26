@@ -1,0 +1,18 @@
+{% extends "layout_admin.html" %}
+{% set active_page = "Edit World" %}
+
+
+{% block content_body %}
+  <div class="container">
+    <h1 class="text-white font-brand">Worlds</h1>
+
+    <div class="card-paper p-2 rounded-lg">
+
+      <ul>
+        {% for world in worlds: %}
+          <li><a href="/world/edit?wid={{ world.wid }}">{{ world.name }} {{ world.wid }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}

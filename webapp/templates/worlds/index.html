@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% set active_page = "Home" %}
+
+{% block content %}
+  <div class="container">
+    <div id="app-gui">
+      <worlds-list ref="worlds-list"></worlds-list>
+    </div>
+  </div>
+
+  <script type="module">
+    import {init_api} from '/js/api.js';
+
+    // only admins can see this page, so they have session
+    init_api('{{ current_user.access_token }}');
+  </script>
+  <script type="module" src="/js/worlds.js"></script>
+{% endblock %}
+
+{% block styles %}
+  <link type="text/css" rel="stylesheet" href="/css/vendor/bootstrap-vue.min.css"/>
+{% endblock %}
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="/js/vendor/bootstrap-vue.min.js"></script>
+l
+<!--  <script src="/js/vendor/vue.min.js"></script>-->
+{% endblock %}

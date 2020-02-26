@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% set navigation_bar = [
+  (url_for('Home.get_welcome'), 'Home'),
+] -%}
+{% set active_page = active_page | default('index') -%}
+{% set title = active_page + ' - EME Example website' %}
+
+{% if current_user.admin %}
+  {% set navigation_bar = navigation_bar + [
+    (url_for('Worlds.get_index'), 'Worlds'),
+    (url_for('Users.get_list'), 'Users'),
+  ] -%}
+{% endif %}
+<html>
+<head>
+  <title>{{ title }}</title>
+
+  {% block head %}{% endblock %}
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  {% block og %}
+    <meta property="og:title" content="{{ title }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com" />
+    <meta property="og:image" content="/img/banner.png" />
+    <meta property="og:description" content="EME - it really whips the web's ass!" />
+  {% endblock %}
+
+  <!-- Bootstrap & Vue.js & Bootstrap-vue -->
+  <link type="text/css" rel="stylesheet" href="/css/vendor/bootstrap.min.css"/>
+
+  <!-- Custom javascript -->
+  {% block scripts %}{% endblock %}
+  <script src="/js/vendor/ra.min.js"></script>
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  {% block styles %}{% endblock %}
+
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-light bg-dark">
+    <a class="navbar-brand" href="/" target="_blank">
+      <img src="/img/logo.png" class="brand-logo"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <ul class="navbar-nav">
+        {% for href, name in navigation_bar %}
+        <li class="nav-item {% if name == active_page %}active{% endif %}">
+          <a href="{{ href }}" class="nav-link text-white">{{ name }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  <script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+  <script src="/js/vendor/bootstrap-native.min.js"></script>
+</body>
+</html>

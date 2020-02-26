@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% set active_page = "Home" %}
+
+{% block content %}
+  <div class="container">
+
+    <div class="jumbotron">
+      <h1 class="display-4">Esteban API</h1>
+
+      {% if current_user.is_authenticated %}
+        <p>Welcome {{current_user.username}}!</p>
+
+        {{ current_user}}
+        <a class="btn btn-link btn-lg" href="/users/logout" role="button">Logout</a>
+      {% else %}
+        <a class="btn btn-primary btn-lg" href="/home/auth" role="button">Admin login</a>
+      {% endif %}
+    </div>
+
+  </div>
+{% endblock %}

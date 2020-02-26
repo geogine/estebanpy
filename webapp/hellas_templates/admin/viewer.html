@@ -1,0 +1,25 @@
+{% extends "layout_admin.html" %}
+{% set active_page = "Model Viewer" %}
+
+{% block scripts %}
+  <script src="https://preview.babylonjs.com/viewer/babylon.viewer.js"></script>
+{% endblock %}
+
+{% block content_body %}
+  <div class="container">
+    <select id="mod" onchange="rawr()">
+        <option value="">Select one</option>
+      {% for f,path in models: %}
+        <option value="{{ path }}" {% if model == path %}selected{% endif %}>{{ f }}</option>
+      {% endfor %}
+    </select>
+
+    <babylon id="bab" model="/models/{{ model }}" templates.main.params.fill-screen="true"></babylon>
+  </div>
+
+  <script>
+    function rawr(e) {
+      window.location = '/admin/viewer?model=' + $("#mod").value;
+    }
+  </script>
+{% endblock %}

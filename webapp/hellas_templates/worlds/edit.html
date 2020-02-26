@@ -1,0 +1,35 @@
+{% extends "layout_admin.html" %}
+{% set active_page = "Edit World" %}
+
+
+{% block content_body %}
+  <div class="container card-paper">
+    <h1>Edit {{ world.name }} - <span class="small">{{ world.wid }}</span></h1>
+
+    <form action="/world/edit" method="POST">
+      <input type="hidden" name="wid" value="{{ world.wid }}">
+
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" name="name" value="{{ world.name }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Last Updated:</label>
+        <input type="datetime" class="form-control" name="last_update" value="{{ world.last_update }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Max players:</label>
+        <input type="number" class="form-control" name="max_players" value="{{ world.max_players }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Invlink:</label>
+        <input type="text" class="form-control" name="invlink" value="{{ world.invlink }}">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
+{% endblock %}

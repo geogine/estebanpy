@@ -1,0 +1,21 @@
+{% extends "layout_admin.html" %}
+{% set active_page = "Edit Town" %}
+
+
+{% block content_body %}
+
+  <!-- Vue.js gui frame -->
+  <div id="app-gui">
+    <town-edit ref="town-edit"></town-edit>
+  </div>
+
+  <!-- app init -->
+  <script defer type="module">
+    import {edit_town} from '/client/admin.js';
+
+    window.onload = function() {
+      edit_town({{ conf|tojson }}, {{ get_user().to_dict()|tojson }}, '', {{ town.to_dict()|tojson }} );
+    }
+  </script>
+
+{% endblock %}

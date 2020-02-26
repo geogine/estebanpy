@@ -1,0 +1,43 @@
+{% extends "layout_game.html" %}
+{% set active_page = 'Town Overview' -%}
+
+{% block scripts %}
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+{% endblock %}
+
+{% block content_body %}
+  
+  <div class="container">
+    <h1>
+      <a href="/town/edit"><span class="ra ra-icon-edit"></span></a>
+      {{ town.name }}
+    </h1>
+
+    <div class="row">
+      <div class="col">
+        <h2>Resources</h2>
+
+        <code>{{ town.resources }}</code>
+        <p class="small">resource_id -> number of resources</p>
+
+        <h2>Gathering</h2>
+
+        <code>{{ town.gatherers }}</code>
+        <p class="small">list of [resource_id, level of gatherer]</p>
+      </div>
+      <div class="col">
+        <h2>Buildings</h2>
+
+        <code>{{ town.buildings }}</code>
+        <p class="small">building_id -> level of building</p>
+
+        <h2>Coordinates</h2>
+
+        <code>{{ town.placements }}</code>
+        <p class="small">building_id -> [x,y]</p>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
