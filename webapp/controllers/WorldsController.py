@@ -13,6 +13,9 @@ class WorldsController():
         self.group = 'Worlds'
 
         self.repo = get_repo(World)
+        self.server.preset_endpoints({
+            "GET /worlds/<wid>/chat": 'Worlds.get_chat',
+        })
 
     def index(self):
         if not verify('admin', current_user):
@@ -20,6 +23,13 @@ class WorldsController():
 
         # js client only for the api:
         return render_template('/worlds/index.html')
+
+    def get_chat(self, wid):
+        world = self.repo.get(wid)
+
+        addr = self.server.conf['ws_address']
+
+        return render_template('/worlds/chat.html', ws_addr = addr, world=world)
 
     def get_join(self, invlink):
         user = current_user

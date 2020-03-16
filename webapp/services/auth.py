@@ -1,3 +1,5 @@
+from time import time
+
 import requests
 from authlib.integrations.requests_client import OAuth2Auth
 from authlib.oauth2.rfc6749 import TokenMixin
@@ -23,9 +25,12 @@ conf = None
 
 class DoorsCachedToken(TokenMixin):
 
-    def __init__(self, access_token, user):
+    def __init__(self, access_token, user, expires_in=None, issued_at=None):
         self.access_token = access_token
         self.user = user
+
+        self.expires_in = expires_in
+        self.issued_at = issued_at
 
     def get_client_id(self):
         return conf['client_id']
@@ -34,12 +39,10 @@ class DoorsCachedToken(TokenMixin):
         return conf['scope']
 
     def get_expires_in(self):
-        # todo: get these info later
-        return float('inf')
+        return self.expires_in
 
     def get_expires_at(self):
-        # todo: get these info later
-        return float('inf')
+        return self.expires_in + self.issued_at
 
 
 class DoorsTokenValidator(BearerTokenValidator):
@@ -49,7 +52,7 @@ class DoorsTokenValidator(BearerTokenValidator):
         user = user_repo.find_by_token(token_string)
 
         if user is not None:
-            return DoorsCachedToken(token_string, user)
+            return DoorsCachedToken(token_string, user, user.expires_in, user.issued_at)
 
         return None
 
@@ -80,7 +83,19 @@ def load_user(uid):
     if uid is None or uid == 'None':
         return None
 
-    return user_repo.get(uid)
+    user: User = user_repo.get(uid)
+
+    if user is None:
+        return None
+
+    # validate if this access token is still valid
+    if user.expires_at < time():
+        # delete expired user cache
+        user_repo.delete(user)
+        return None
+
+    return user
+
 
 
 def get_authorize_url():
@@ -105,11 +120,15 @@ def fetch_token(code):
 
     if r.status_code != 200:
         return None
+    resp = r.json()
+    conf['access_token'] = resp['access_token']
 
-    access_token = r.json()['access_token']
-    conf['access_token'] = access_token
-
-    return access_token
+    return DoorsCachedToken(
+        access_token=resp['access_token'],
+        user=None,
+        expires_in=resp['expires_in'],
+        issued_at=resp.get('issued_at', time()),
+    )
 
 
 def fetch_user(access_token=None):

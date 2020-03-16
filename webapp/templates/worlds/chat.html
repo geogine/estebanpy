@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% set active_page = "Home" %}
+
+{% block content %}
+  <div class="container">
+    <div id="app-gui">
+      <h2>{{ world.name }} <span class="badge badge-secondary">{{ world.invlink }}</span></h2>
+
+      <chat-gui room-id="global" ref="global-chat"></chat-gui>
+    </div>
+  </div>
+
+  <script type="module">
+    import {init} from '/js/chat.js';
+
+    const ws_addr = '{{ ws_addr }}';
+    const user = {{ current_user.view|tojson }};
+
+    // only admins can see this page, so they have session
+    init(ws_addr, user);
+  </script>
+{% endblock %}
+
+{% block styles %}
+  <link type="text/css" rel="stylesheet" href="/css/vendor/bootstrap-vue.min.css"/>
+{% endblock %}
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="/js/vendor/bootstrap-vue.min.js"></script>
+{% endblock %}

@@ -13,3 +13,7 @@
 .navbar {
   margin-bottom: 18px;
 }
+
+.pointer {
+  cursor: pointer;
+}

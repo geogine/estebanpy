@@ -17,18 +17,43 @@ class User(UserMixin, EntityBase):
     world = relationship(World, foreign_keys=[wid])
 
     def __init__(self, **kwargs):
-        self.uid = kwargs.get("uid")
-        self.username = kwargs.get("username")
+        self.uid = kwargs.get('uid')
+        self.username = kwargs.get('username')
+        self.admin = kwargs.get('admin')
+        self.face = kwargs.get('face')
+        self.points = kwargs.get('points')
+        self.last_active = kwargs.get('last_active')
+        self.access_token = kwargs.get('access_token')
+        self.refresh_token = kwargs.get('refresh_token')
+        self.issued_at = kwargs.get('issued_at')
+        self.expires_in = kwargs.get('expires_in')
 
-        self.face = kwargs.get("face")
-        self.token = kwargs.get("token")
-        self.points = kwargs.get("points")
-        self.admin = kwargs.get("admin")
         self.wid = kwargs.get("wid")
         self.iso = kwargs.get("iso")
 
         if not isinstance(self.admin, bool):
             self.admin = int(self.admin) == 1
+
+    @property
+    def expires_at(self):
+        return self.issued_at + self.expires_in
+
+    @property
+    def view(self):
+        return {
+            "uid": self.uid,
+            "username": self.username,
+            "admin": self.admin,
+            "face": self.face,
+            "points": self.points,
+            "last_active": self.last_active,
+            "access_token": self.access_token,
+            "refresh_token": self.refresh_token,
+            "issued_at": self.issued_at,
+            "expires_in": self.expires_in,
+            "wid": self.wid,
+            "iso": self.iso,
+        }
 
 
 from core.dal.country import Country

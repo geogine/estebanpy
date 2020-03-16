@@ -20,6 +20,10 @@ class ExampleWebsite(WebsiteApp):
         auth.init(self, conf['auth'])
         mail.init_mail(self, conf['mail'])
 
+        self.conf = {
+            'ws_address': conf['websocket']['addr']
+        }
+
         self.load_controllers('Api', script_path, 'apis')
 
 

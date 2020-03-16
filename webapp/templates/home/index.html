@@ -13,7 +13,9 @@
         {{ current_user}}
         <a class="btn btn-link btn-lg" href="/users/logout" role="button">Logout</a>
       {% else %}
-        <a class="btn btn-primary btn-lg" href="/home/auth" role="button">Admin login</a>
+        <h3>Admin login</h3>
+        <p>You must be logged in the Doors Account website before this action.</p>
+        <a class="btn btn-primary btn-lg" href="{{ url_for('Users.get_auth') }}" role="button">Authenticate</a>
       {% endif %}
     </div>
 

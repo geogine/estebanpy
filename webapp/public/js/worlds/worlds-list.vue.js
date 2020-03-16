@@ -10,12 +10,15 @@ export const template = `
 
       <ul class="list-group">
 
-        <li v-for="world in worlds" @click="selected = world" :class="{'list-group-item list-group-item-action flex-column align-items-start': true, 'active': selected && selected.wid == world.wid}">
+        <li v-for="world in worlds" @click="selected = world" :class="{'list-group-item list-group-item-action flex-column align-items-start pointer': true, 'active': selected && selected.wid == world.wid}">
           <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{ world.name }}</h5>
             <small>{{ (new Date(world.created_at*1000.0)).toUTCString() }}</small>
           </div>
-          <p class="mb-1"><b>#{{ world.invlink }}</b></p>
+          <p class="mb-1">
+            <i>#{{ world.invlink }}</i>
+            <a class="btn btn-link" :href="'/worlds/'+world.wid+'/chat'">Chat</a>
+          </p>
           <small>Last update: {{ interval(world.last_update) }}</small>
         </li>
 
