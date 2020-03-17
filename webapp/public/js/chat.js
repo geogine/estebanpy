@@ -1,4 +1,4 @@
-import {component} from '/js/worlds/worlds-list.js';
+import {chat_gui} from '/js/worlds/chat.js';
 import {ws_client} from '/js/websocket/wsclient.js';
 
 
@@ -21,11 +21,16 @@ export function init(ws_address, user, cb) {
       uid: user.uid,
       access_token: user.access_token,
     }).then((resp)=>{
-      console.log("Authenticated");
-      console.log(resp);
+      console.log("Authenticated", resp.uid);
 
-      //gui.$refs['global-chat'].init();
+      // ws.request("Users:me", {}).then((usr)=>{
+      //   console.log("works!", usr);
+      // });
 
+      gui.$refs['global-chat'].sub();
+
+      window.ws = ws;
+      window.chat = gui.$refs['global-chat'];
 
       if(cb)
         cb();

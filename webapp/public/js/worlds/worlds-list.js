@@ -60,6 +60,20 @@ export let component = Vue.component('worlds-list', {
       });
     },
 
+    on_join: function(world) {
+      const iso = prompt("ISO:", 'UK');
+
+      if (!iso)
+        return;
+
+      request('POST /api/worlds/'+world.wid+'/player', {
+        iso: iso,
+      }, ({wid, iso})=>{
+        this.selected.iso = iso;
+      });
+
+    },
+
     interval: function(t) {
       const dt = time() - t;
 

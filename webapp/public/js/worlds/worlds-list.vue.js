@@ -17,7 +17,8 @@ export const template = `
           </div>
           <p class="mb-1">
             <i>#{{ world.invlink }}</i>
-            <a class="btn btn-link" :href="'/worlds/'+world.wid+'/chat'">Chat</a>
+
+            <button class="btn btn-primary" @click="on_join(world)">Join</button>
           </p>
           <small>Last update: {{ interval(world.last_update) }}</small>
         </li>

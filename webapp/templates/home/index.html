@@ -8,10 +8,28 @@
       <h1 class="display-4">Esteban API</h1>
 
       {% if current_user.is_authenticated %}
-        <p>Welcome {{current_user.username}}!</p>
 
-        {{ current_user}}
-        <a class="btn btn-link btn-lg" href="/users/logout" role="button">Logout</a>
+        <div class="row">
+          <div class="col">
+            <h5>User</h5>
+
+            <p>Welcome {{ current_user.username }}. {% if current_user.admin %}<br/><b>You're an admin</b>{% endif %}!</p>
+
+            <a class="btn btn-link btn-lg" href="/users/logout" role="button">Logout</a>
+          </div>
+          <div class="col">
+            <h5>World</h5>
+
+            {% if current_user.world %}
+            <p>In world <b>{{ current_user.world.name }}</b> <br/>as <b>{{ current_user.iso }}</b></p>
+
+
+              <p><a class="btn btn-link btn-lg" href="{{ url_for('Worlds.get_chat') }}">Chat</a></p>
+            {% else %}
+              <p><i>You are not in a world.</i></p>
+            {% endif %}
+          </div>
+        </div>
       {% else %}
         <h3>Admin login</h3>
         <p>You must be logged in the Doors Account website before this action.</p>

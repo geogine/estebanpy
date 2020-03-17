@@ -15,6 +15,7 @@ class WorldsController():
         self.repo = get_repo(World)
         self.server.preset_endpoints({
             "GET /worlds/<wid>/chat": 'Worlds.get_chat',
+            "GET /worlds/chat": 'Worlds.get_chat',
         })
 
     def index(self):
@@ -24,8 +25,11 @@ class WorldsController():
         # js client only for the api:
         return render_template('/worlds/index.html')
 
-    def get_chat(self, wid):
-        world = self.repo.get(wid)
+    def get_chat(self, wid=None):
+        if wid:
+            world = self.repo.get(wid)
+        else:
+            world = current_user.world
 
         addr = self.server.conf['ws_address']
 

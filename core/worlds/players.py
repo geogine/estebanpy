@@ -87,8 +87,11 @@ def merge_worlds(world: World, world2: World):
 
 def join_world(world, user, iso=None):
     # check if world is above limit
-    if world.max_players <= country_repo.count():
+    if world.max_players <= len(list(country_repo.list_with_players(world.wid))):
         raise JoinException("max_players")
+
+    # check if user is already joined
+    # todo: check already connected from players...
 
     # check if spot is taken
     if iso:
@@ -101,7 +104,7 @@ def join_world(world, user, iso=None):
         user.iso = iso
     else:
         # give random country to player
-        _countries = country_repo.list_without_players(world.wid)
+        _countries = list(country_repo.list_without_players(world.wid))
 
         user.iso = random.choice(_countries).iso
 

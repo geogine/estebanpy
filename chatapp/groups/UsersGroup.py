@@ -10,7 +10,7 @@ class UsersGroup:
         tk = request.data['access_token']
         uid = request.data['uid']
 
-        user = auth.fetch_user(tk)
+        user = auth.load_user(uid, tk)
         assert uid == str(user.uid)
 
         # set user
@@ -21,4 +21,14 @@ class UsersGroup:
         return {
             "auth": "OK",
             "uid": user.uid
+        }
+
+    async def me(self, request, user):
+        # test method to check stuff
+
+        return {
+            'uid': user.uid,
+            'username': user.username,
+            'wid': user.wid,
+            'iso': user.iso,
         }
