@@ -19,8 +19,8 @@ def verify(policy, user, entity=None):
         # admins can do everything
         return True
     elif 'king' == policy:
-        return entity.iso == user.iso
-    elif 'member' == policy:
+        return entity.iso == user.iso and entity.wid == user.wid
+    elif 'member' == policy or 'in world' == policy:
         return entity.wid == user.wid
     elif 'worldless' == policy:
         return user.wid is None
